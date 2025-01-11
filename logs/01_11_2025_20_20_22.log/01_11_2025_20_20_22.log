@@ -1,0 +1,22 @@
+[2025-01-11 20:20:25,034] 24 root - INFO - Entered the data ingestion method or component
+[2025-01-11 20:20:25,051] 27 root - INFO - Read the dataset as dataframe
+[2025-01-11 20:20:25,061] 32 root - INFO - Train Test split initiated
+[2025-01-11 20:20:25,091] 39 root - INFO - Ingestion of the data is completed.
+[2025-01-11 20:20:25,137] 86 root - INFO - Data loading completed
+[2025-01-11 20:20:25,137] 89 root - INFO - Training Data Columns: Index(['ID', 'Year_Birth', 'Education', 'Marital_Status', 'Income', 'Kidhome',
+       'Teenhome', 'Dt_Customer', 'Recency', 'MntWines', 'MntFruits',
+       'MntMeatProducts', 'MntFishProducts', 'MntSweetProducts',
+       'MntGoldProds', 'NumDealsPurchases', 'NumWebPurchases',
+       'NumCatalogPurchases', 'NumStorePurchases', 'NumWebVisitsMonth',
+       'AcceptedCmp3', 'AcceptedCmp4', 'AcceptedCmp5', 'AcceptedCmp1',
+       'AcceptedCmp2', 'Complain', 'Z_CostContact', 'Z_Revenue', 'Response'],
+      dtype='object')
+[2025-01-11 20:20:25,137] 90 root - INFO - Testing Data Columns: Index(['ID', 'Year_Birth', 'Education', 'Marital_Status', 'Income', 'Kidhome',
+       'Teenhome', 'Dt_Customer', 'Recency', 'MntWines', 'MntFruits',
+       'MntMeatProducts', 'MntFishProducts', 'MntSweetProducts',
+       'MntGoldProds', 'NumDealsPurchases', 'NumWebPurchases',
+       'NumCatalogPurchases', 'NumStorePurchases', 'NumWebVisitsMonth',
+       'AcceptedCmp3', 'AcceptedCmp4', 'AcceptedCmp5', 'AcceptedCmp1',
+       'AcceptedCmp2', 'Complain', 'Z_CostContact', 'Z_Revenue', 'Response'],
+      dtype='object')
+[2025-01-11 20:20:25,153] 108 root - INFO - New_Education feature created by replacing values in Education

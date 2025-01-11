@@ -3,6 +3,7 @@ numpy
 seaborn
 plotly
 scikit-learn
+dill
 
 #-e .
 

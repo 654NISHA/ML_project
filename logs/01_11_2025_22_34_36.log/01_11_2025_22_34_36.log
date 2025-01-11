@@ -1,0 +1,28 @@
+[2025-01-11 22:34:39,605] 24 root - INFO - Entered the data ingestion method or component
+[2025-01-11 22:34:39,637] 27 root - INFO - Read the dataset as dataframe
+[2025-01-11 22:34:39,680] 32 root - INFO - Train Test split initiated
+[2025-01-11 22:34:39,727] 39 root - INFO - Ingestion of the data is completed.
+[2025-01-11 22:34:39,805] 86 root - INFO - Data loading completed
+[2025-01-11 22:34:39,805] 89 root - INFO - Training Data Columns: Index(['ID', 'Year_Birth', 'Education', 'Marital_Status', 'Income', 'Kidhome',
+       'Teenhome', 'Dt_Customer', 'Recency', 'MntWines', 'MntFruits',
+       'MntMeatProducts', 'MntFishProducts', 'MntSweetProducts',
+       'MntGoldProds', 'NumDealsPurchases', 'NumWebPurchases',
+       'NumCatalogPurchases', 'NumStorePurchases', 'NumWebVisitsMonth',
+       'AcceptedCmp3', 'AcceptedCmp4', 'AcceptedCmp5', 'AcceptedCmp1',
+       'AcceptedCmp2', 'Complain', 'Z_CostContact', 'Z_Revenue', 'Response'],
+      dtype='object')
+[2025-01-11 22:34:39,821] 90 root - INFO - Testing Data Columns: Index(['ID', 'Year_Birth', 'Education', 'Marital_Status', 'Income', 'Kidhome',
+       'Teenhome', 'Dt_Customer', 'Recency', 'MntWines', 'MntFruits',
+       'MntMeatProducts', 'MntFishProducts', 'MntSweetProducts',
+       'MntGoldProds', 'NumDealsPurchases', 'NumWebPurchases',
+       'NumCatalogPurchases', 'NumStorePurchases', 'NumWebVisitsMonth',
+       'AcceptedCmp3', 'AcceptedCmp4', 'AcceptedCmp5', 'AcceptedCmp1',
+       'AcceptedCmp2', 'Complain', 'Z_CostContact', 'Z_Revenue', 'Response'],
+      dtype='object')
+[2025-01-11 22:34:39,821] 99 root - INFO - New_Education feature created by replacing values in Education
+[2025-01-11 22:34:39,857] 17 root - INFO - Dt_Customer transformed into Days_since_signup
+[2025-01-11 22:34:39,876] 17 root - INFO - Dt_Customer transformed into Days_since_signup
+[2025-01-11 22:34:39,885] 53 root - INFO - Outliers removed from Income. Shape after removal: (1766, 30)
+[2025-01-11 22:34:39,890] 32 root - INFO - Data filtered by age. Shape after filtering: (1764, 31)
+[2025-01-11 22:34:39,890] 64 root - INFO - Categorical columns: ['Education', 'Marital_Status', 'Dt_Customer', 'Recency', 'AcceptedCmp3', 'AcceptedCmp4', 'AcceptedCmp5', 'AcceptedCmp1', 'AcceptedCmp2', 'Complain', 'Response']
+[2025-01-11 22:34:39,890] 65 root - INFO - Numerical columns: ['Income', 'Year_Birth', 'Kidhome', 'Teenhome', 'MntWines', 'MntFruits', 'MntMeatProducts', 'MntFishProducts', 'MntSweetProducts', 'MntGoldProds', 'NumDealsPurchases', 'NumWebPurchases', 'NumCatalogPurchases', 'NumStorePurchases', 'NumWebVisitsMonth', 'Z_CostContact', 'Z_Revenue']

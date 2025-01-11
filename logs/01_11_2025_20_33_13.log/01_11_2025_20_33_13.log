@@ -1,0 +1,26 @@
+[2025-01-11 20:33:16,347] 24 root - INFO - Entered the data ingestion method or component
+[2025-01-11 20:33:16,368] 27 root - INFO - Read the dataset as dataframe
+[2025-01-11 20:33:16,386] 32 root - INFO - Train Test split initiated
+[2025-01-11 20:33:16,400] 39 root - INFO - Ingestion of the data is completed.
+[2025-01-11 20:33:16,447] 86 root - INFO - Data loading completed
+[2025-01-11 20:33:16,447] 89 root - INFO - Training Data Columns: Index(['ID', 'Year_Birth', 'Education', 'Marital_Status', 'Income', 'Kidhome',
+       'Teenhome', 'Dt_Customer', 'Recency', 'MntWines', 'MntFruits',
+       'MntMeatProducts', 'MntFishProducts', 'MntSweetProducts',
+       'MntGoldProds', 'NumDealsPurchases', 'NumWebPurchases',
+       'NumCatalogPurchases', 'NumStorePurchases', 'NumWebVisitsMonth',
+       'AcceptedCmp3', 'AcceptedCmp4', 'AcceptedCmp5', 'AcceptedCmp1',
+       'AcceptedCmp2', 'Complain', 'Z_CostContact', 'Z_Revenue', 'Response'],
+      dtype='object')
+[2025-01-11 20:33:16,447] 90 root - INFO - Testing Data Columns: Index(['ID', 'Year_Birth', 'Education', 'Marital_Status', 'Income', 'Kidhome',
+       'Teenhome', 'Dt_Customer', 'Recency', 'MntWines', 'MntFruits',
+       'MntMeatProducts', 'MntFishProducts', 'MntSweetProducts',
+       'MntGoldProds', 'NumDealsPurchases', 'NumWebPurchases',
+       'NumCatalogPurchases', 'NumStorePurchases', 'NumWebVisitsMonth',
+       'AcceptedCmp3', 'AcceptedCmp4', 'AcceptedCmp5', 'AcceptedCmp1',
+       'AcceptedCmp2', 'Complain', 'Z_CostContact', 'Z_Revenue', 'Response'],
+      dtype='object')
+[2025-01-11 20:33:16,447] 108 root - INFO - New_Education feature created by replacing values in Education
+[2025-01-11 20:33:16,463] 15 root - INFO - Dt_Customer transformed into Days_since_signup
+[2025-01-11 20:33:16,479] 15 root - INFO - Dt_Customer transformed into Days_since_signup
+[2025-01-11 20:33:16,479] 33 root - INFO - Outliers removed from Income. Shape after removal: (1766, 30)
+[2025-01-11 20:33:16,479] 33 root - INFO - Outliers removed from Income. Shape after removal: (442, 30)
