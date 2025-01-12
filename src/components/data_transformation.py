@@ -1,5 +1,3 @@
-# src/components/data_transformation.py
-
 import os
 import sys
 import logging
@@ -11,7 +9,7 @@ from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 from src.exception import CustomException
 from src.utils import save_object
-from src.components.data_cleaning import preprocess_datetime, remove_outliers_iqr, filter_data_by_age
+from src.components.data_cleaning import DataCleaning
 
 class DataTransformationConfig:
     preprocessor_obj_file_path = os.path.join('artifacts', 'preprocessor.pkl')
@@ -49,10 +47,10 @@ class DataTransformation:
             # Define columns
             numerical_columns = ['Income', 'Year_Birth', 'Kidhome', 'Teenhome', 'MntWines', 'MntFruits', 'MntMeatProducts',
                                  'MntFishProducts', 'MntSweetProducts', 'MntGoldProds', 'NumDealsPurchases',
-                                 'NumWebPurchases', 'NumCatalogPurchases', 'NumStorePurchases', 'NumWebVisitsMonth',
-                                 'Z_CostContact', 'Z_Revenue']
-            categorical_columns = ['Education', 'Marital_Status', 'Dt_Customer', 'Recency', 'AcceptedCmp3', 
-                                   'AcceptedCmp4', 'AcceptedCmp5', 'AcceptedCmp1', 'AcceptedCmp2', 'Complain', 'Response']
+                                 'NumWebPurchases', 'NumCatalogPurchases', 'NumStorePurchases', 'NumWebVisitsMonth']
+            categorical_columns = ['New_Education', 'Marital_Status', 'Dt_Customer', 'Recency', 'AcceptedCmp3', 
+                                   'AcceptedCmp4', 'AcceptedCmp5', 'AcceptedCmp1', 'AcceptedCmp2', 'Complain', 'Response', 
+                                   'Year_of_joining', 'Month_of_joining']  # New features added
 
             # Pipelines for numerical and categorical data
             num_pipeline = Pipeline(steps=[("imputer", SimpleImputer(strategy="median"))])
@@ -70,26 +68,13 @@ class DataTransformation:
             return preprocessor
 
         except Exception as e:
-            raise CustomException(e)
+            raise CustomException(e, sys)
 
     def initiate_data_transformation(self, train_df, test_df):
         """
         Orchestrates the data transformation process.
         """
         try:
-            # Strip any extra spaces in the column names
-            train_df.columns = train_df.columns.str.strip()
-            test_df.columns = test_df.columns.str.strip()
-
-            # Check if 'Dt_Customer' column is missing
-            if 'Dt_Customer' not in train_df.columns:
-                logging.error("Error: 'Dt_Customer' column is missing in training data.")
-                raise ValueError("'Dt_Customer' column is missing from the training dataset")
-
-            if 'Dt_Customer' not in test_df.columns:
-                logging.error("Error: 'Dt_Customer' column is missing in testing data.")
-                raise ValueError("'Dt_Customer' column is missing from the testing dataset")
-
             # Apply datetime transformation
             train_df = preprocess_datetime(train_df)
             test_df = preprocess_datetime(test_df)
@@ -99,7 +84,6 @@ class DataTransformation:
 
             # Apply age filtering to both train and test data
             train_df = filter_data_by_age(train_df)
-            test_df = filter_data_by_age(test_df)
 
             # Get the preprocessing pipeline
             preprocessing_obj = self.get_data_transformer_object()
@@ -114,4 +98,4 @@ class DataTransformation:
             return train_arr, test_arr, self.data_transformation_config.preprocessor_obj_file_path
 
         except Exception as e:
-            raise CustomException(e)
+            raise CustomException(e, sys)

@@ -1,60 +1,57 @@
-# src/components/data_cleaning.py
-
 import pandas as pd
+import logging
 from datetime import datetime
 from src.exception import CustomException
 import sys
-import logging
 
-def preprocess_datetime(df):
-    """
-    Convert Dt_Customer to numerical feature (days since customer signed up).
-    """
-    try:
-        current_date = datetime.now()
-        if 'Dt_Customer' in df.columns:
-            df['Dt_Customer'] = pd.to_datetime(df['Dt_Customer'], format='%d-%m-%Y', errors='coerce')  # Handle errors in date conversion
-            df['Days_since_signup'] = (current_date - df['Dt_Customer']).dt.days
-            df.drop(columns=['Dt_Customer'], inplace=True)  # Optionally drop the original date column
-            logging.info("Dt_Customer transformed into Days_since_signup")
-        else:
-            logging.warning("'Dt_Customer' column is missing.")
-        return df
-    except Exception as e:
-        raise CustomException(e, sys)
+class DataCleaning:
+    def __init__(self):
+        pass
 
-def filter_data_by_age(df):
-    """
-    Filter data by age, removing individuals over 90.
-    """
-    try:
-        if 'Year_Birth' in df.columns:
-            df['Age'] = datetime.now().year - df['Year_Birth']  # Make sure 'Age' is added
-            df = df[df['Age'] <= 90].reset_index(drop=True)
-            logging.info(f"Data filtered by age. Shape after filtering: {df.shape}")
-        else:
-            logging.warning("'Year_Birth' column is missing.")
-        return df
-    except Exception as e:
-        raise CustomException(e, sys)
+    def clean_data(self, data):
+        """
+        Perform data cleaning such as handling missing values and creating new features.
+        """
+        try:
+            logging.info("Starting data cleaning process.")
 
-def remove_outliers_iqr(df, column):
-    """
-    Remove outliers using IQR method for a specific column.
-    """
-    try:
-        if column in df.columns:
-            Q1 = df[column].quantile(0.25)
-            Q3 = df[column].quantile(0.75)
-            IQR = Q3 - Q1
-            lower_limit = Q1 - 1.5 * IQR
-            upper_limit = Q3 + 1.5 * IQR
+            # Dropping unnecessary columns
+            data.drop(['ID', 'Z_CostContact', 'Z_Revenue'], axis=1, inplace=True)
 
-            # Filtering out the outliers
-            df = df[(df[column] >= lower_limit) & (df[column] <= upper_limit)].reset_index(drop=True)
-            logging.info(f"Outliers removed from {column}. Shape after removal: {df.shape}")
-        else:
-            logging.warning(f"'{column}' column is missing.")
-        return df
-    except Exception as e:
-        raise CustomException(e, sys)
+            # Creating new features
+            data['Kids'] = data['Teenhome'] + data['Kidhome']
+
+            # Age from Year_Birth
+            data['Age'] = datetime.now().year - data['Year_Birth']
+
+            # Replacing Basic and 2n Cycle with School
+            data['New_Education'] = data['Education'].replace(['Basic', '2n Cycle'], 'School')
+
+            # Converting Dt_Customer to datetime and creating new date-related features
+            data['Dt_Customer'] = pd.to_datetime(data['Dt_Customer'], format='%d-%m-%Y')
+            d1 = max(data['Dt_Customer'])
+            data['Days_for'] = (d1 - data['Dt_Customer']).dt.days
+            data['Year_of_joining'] = data['Dt_Customer'].dt.year
+            data['Month_of_joining'] = data['Dt_Customer'].dt.month
+
+            # Calculating total amount spent and accepted campaigns
+            data['Total_amount_spent'] = (
+                data['MntFishProducts'] + data['MntFruits'] + data['MntGoldProds'] +
+                data['MntMeatProducts'] + data['MntWines'] + data['MntSweetProducts']
+            )
+
+            data['Accepted_campaign'] = (
+                data['AcceptedCmp1'] + data['AcceptedCmp2'] + data['AcceptedCmp3'] +
+                data['AcceptedCmp4'] + data['AcceptedCmp5']
+            )
+
+            # Total number of purchases
+            data['Number_of_purchases'] = (
+                data['NumDealsPurchases'] + data['NumWebPurchases'] +
+                data['NumCatalogPurchases'] + data['NumStorePurchases']
+            )
+
+            logging.info("Data cleaning process completed.")
+            return data
+        except Exception as e:
+            raise CustomException(e, sys)
