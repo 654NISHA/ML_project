@@ -1,0 +1,33 @@
+[2025-01-13 12:56:44,581] 26 root - INFO - Entered the data ingestion method or component
+[2025-01-13 12:56:44,607] 29 root - INFO - Read the dataset as dataframe
+[2025-01-13 12:56:44,635] 35 root - INFO - Train test split initiated
+[2025-01-13 12:56:44,659] 42 root - INFO - Ingestion of the data is completed
+[2025-01-13 12:56:44,727] 97 root - INFO - Read train and test data completed.
+[2025-01-13 12:56:44,727] 16 root - INFO - Starting data cleaning process.
+[2025-01-13 12:56:44,729] 24 root - INFO - Dropped Id, Z_CostContact, Z_Revenue columns
+[2025-01-13 12:56:44,731] 28 root - INFO - Filled missing values using forward fill.
+[2025-01-13 12:56:44,743] 32 root - INFO - Created Kids feature
+[2025-01-13 12:56:44,744] 36 root - INFO - Created Age feature
+[2025-01-13 12:56:44,746] 40 root - INFO - Created New_Education feature
+[2025-01-13 12:56:44,775] 53 root - INFO - Created Days_for, Year_of_joining, and Month_of_joining columns.
+[2025-01-13 12:56:44,778] 60 root - INFO - Created Total_amount_spent feature.
+[2025-01-13 12:56:44,780] 66 root - INFO - Created Accepted_campaign feature.
+[2025-01-13 12:56:44,782] 73 root - INFO - Created Number_of_purchases feature.
+[2025-01-13 12:56:44,783] 75 root - INFO - Data cleaning process completed.
+[2025-01-13 12:56:44,783] 16 root - INFO - Starting data cleaning process.
+[2025-01-13 12:56:44,784] 24 root - INFO - Dropped Id, Z_CostContact, Z_Revenue columns
+[2025-01-13 12:56:44,786] 28 root - INFO - Filled missing values using forward fill.
+[2025-01-13 12:56:44,788] 32 root - INFO - Created Kids feature
+[2025-01-13 12:56:44,789] 36 root - INFO - Created Age feature
+[2025-01-13 12:56:44,791] 40 root - INFO - Created New_Education feature
+[2025-01-13 12:56:44,802] 53 root - INFO - Created Days_for, Year_of_joining, and Month_of_joining columns.
+[2025-01-13 12:56:44,805] 60 root - INFO - Created Total_amount_spent feature.
+[2025-01-13 12:56:44,808] 66 root - INFO - Created Accepted_campaign feature.
+[2025-01-13 12:56:44,810] 73 root - INFO - Created Number_of_purchases feature.
+[2025-01-13 12:56:44,810] 75 root - INFO - Data cleaning process completed.
+[2025-01-13 12:56:44,810] 103 root - INFO - Data cleaning completed on train and test datasets.
+[2025-01-13 12:56:44,820] 112 root - INFO - Outliers removed from Income feature training data.
+[2025-01-13 12:56:44,822] 116 root - INFO - Outlier removed from Age feature from training data
+[2025-01-13 12:56:44,822] 119 root - INFO - Obtaining preprocessing object.
+[2025-01-13 12:56:44,822] 74 root - INFO - Filled the null values in Numerical columns
+[2025-01-13 12:56:44,822] 76 root - INFO - Categorical columns encoding completed

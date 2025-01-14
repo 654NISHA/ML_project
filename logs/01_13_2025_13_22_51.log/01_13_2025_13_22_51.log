@@ -1,0 +1,25 @@
+[2025-01-13 13:22:54,082] 26 root - INFO - Entered the data ingestion method or component
+[2025-01-13 13:22:54,109] 29 root - INFO - Read the dataset as dataframe
+[2025-01-13 13:22:54,147] 35 root - INFO - Train test split initiated
+[2025-01-13 13:22:54,193] 42 root - INFO - Ingestion of the data is completed
+[2025-01-13 13:22:54,297] 100 root - INFO - Read train and test data completed.
+[2025-01-13 13:22:54,298] 16 root - INFO - Starting data cleaning process.
+[2025-01-13 13:22:54,301] 21 root - INFO - Dropped ID, Z_CostContact, Z_Revenue columns.
+[2025-01-13 13:22:54,358] 28 root - INFO - Filled missing values for numerical and categorical columns.
+[2025-01-13 13:22:54,437] 35 root - INFO - Created New features Age,Kids,New_Education
+[2025-01-13 13:22:54,533] 45 root - INFO - Created features ays_since_joining,year_of_joining,month_of_joining 
+[2025-01-13 13:22:54,583] 54 root - INFO - Created features total_amount_spent, accepted_campaigns, number_of_purchases
+[2025-01-13 13:22:54,583] 56 root - INFO - Data cleaning process completed.
+[2025-01-13 13:22:54,584] 16 root - INFO - Starting data cleaning process.
+[2025-01-13 13:22:54,585] 21 root - INFO - Dropped ID, Z_CostContact, Z_Revenue columns.
+[2025-01-13 13:22:54,633] 28 root - INFO - Filled missing values for numerical and categorical columns.
+[2025-01-13 13:22:54,638] 35 root - INFO - Created New features Age,Kids,New_Education
+[2025-01-13 13:22:54,649] 45 root - INFO - Created features ays_since_joining,year_of_joining,month_of_joining 
+[2025-01-13 13:22:54,659] 54 root - INFO - Created features total_amount_spent, accepted_campaigns, number_of_purchases
+[2025-01-13 13:22:54,659] 56 root - INFO - Data cleaning process completed.
+[2025-01-13 13:22:54,659] 106 root - INFO - Data cleaning completed on train and test datasets.
+[2025-01-13 13:22:54,672] 115 root - INFO - Outliers removed from Income feature training data.
+[2025-01-13 13:22:54,675] 119 root - INFO - Outlier removed from Age feature from training data
+[2025-01-13 13:22:54,676] 122 root - INFO - Obtaining preprocessing object.
+[2025-01-13 13:22:54,676] 77 root - INFO - Filled the null values in Numerical columns
+[2025-01-13 13:22:54,676] 79 root - INFO - Categorical columns encoding completed

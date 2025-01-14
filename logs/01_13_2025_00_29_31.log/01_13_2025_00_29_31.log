@@ -1,0 +1,31 @@
+[2025-01-13 00:29:37,982] 26 root - INFO - Entered the data ingestion method or component
+[2025-01-13 00:29:38,013] 29 root - INFO - Read the dataset as dataframe
+[2025-01-13 00:29:38,031] 35 root - INFO - Train test split initiated
+[2025-01-13 00:29:38,055] 42 root - INFO - Ingestion of the data is completed
+[2025-01-13 00:29:38,084] 92 root - INFO - Read train and test data completed.
+[2025-01-13 00:29:38,084] 16 root - INFO - Starting data cleaning process.
+[2025-01-13 00:29:38,086] 20 root - INFO - Droped Id, Z_CostContact, Z_Revenue columns
+[2025-01-13 00:29:38,087] 24 root - INFO - Created Kids feature
+[2025-01-13 00:29:38,088] 28 root - INFO - Created Age feature
+[2025-01-13 00:29:38,089] 32 root - INFO - Created New_Education feature
+[2025-01-13 00:29:38,106] 40 root - INFO - Created Day_for column
+[2025-01-13 00:29:38,107] 47 root - INFO - Created Total_amount_spent feature.
+[2025-01-13 00:29:38,108] 53 root - INFO - Created Accepted_campaign feature.
+[2025-01-13 00:29:38,109] 60 root - INFO - Created Number_of_purchases feature.
+[2025-01-13 00:29:38,109] 62 root - INFO - Data cleaning process completed.
+[2025-01-13 00:29:38,109] 16 root - INFO - Starting data cleaning process.
+[2025-01-13 00:29:38,109] 20 root - INFO - Droped Id, Z_CostContact, Z_Revenue columns
+[2025-01-13 00:29:38,110] 24 root - INFO - Created Kids feature
+[2025-01-13 00:29:38,111] 28 root - INFO - Created Age feature
+[2025-01-13 00:29:38,111] 32 root - INFO - Created New_Education feature
+[2025-01-13 00:29:38,115] 40 root - INFO - Created Day_for column
+[2025-01-13 00:29:38,116] 47 root - INFO - Created Total_amount_spent feature.
+[2025-01-13 00:29:38,117] 53 root - INFO - Created Accepted_campaign feature.
+[2025-01-13 00:29:38,118] 60 root - INFO - Created Number_of_purchases feature.
+[2025-01-13 00:29:38,118] 62 root - INFO - Data cleaning process completed.
+[2025-01-13 00:29:38,118] 98 root - INFO - Data cleaning completed on train and test datasets.
+[2025-01-13 00:29:38,122] 107 root - INFO - Outliers removed from Income feature training data.
+[2025-01-13 00:29:38,123] 111 root - INFO - Outlier removed from Age feature from training data
+[2025-01-13 00:29:38,123] 114 root - INFO - Obtaining preprocessing object.
+[2025-01-13 00:29:38,123] 69 root - INFO - Filled the null values in Numerical columns
+[2025-01-13 00:29:38,123] 71 root - INFO - Categorical columns encoding completed

@@ -6,7 +6,6 @@ from src.logger import logging
 
 from sklearn.model_selection import train_test_split
 from src.components.data_transformation import DataTransformation
-from src.components.data_cleaning import DataCleaning
 
 from dataclasses import dataclass
 
@@ -45,10 +44,10 @@ class DataIngestion:
                 self.ingestion_config.test_data_path
             )
         except Exception as e:
-            raise CustomException(e, sys)
+            raise CustomException(str(e), sys)
 
-
-    
 if __name__ == "__main__":
     obj=DataIngestion()
     obj.initiate_data_ingestion()
+
+

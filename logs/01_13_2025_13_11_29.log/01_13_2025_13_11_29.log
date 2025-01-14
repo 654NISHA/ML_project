@@ -1,0 +1,19 @@
+[2025-01-13 13:11:30,874] 26 root - INFO - Entered the data ingestion method or component
+[2025-01-13 13:11:30,901] 29 root - INFO - Read the dataset as dataframe
+[2025-01-13 13:11:31,035] 35 root - INFO - Train test split initiated
+[2025-01-13 13:11:31,101] 42 root - INFO - Ingestion of the data is completed
+[2025-01-13 13:11:31,179] 100 root - INFO - Read train and test data completed.
+[2025-01-13 13:11:31,180] 16 root - INFO - Starting data cleaning process.
+[2025-01-13 13:11:31,182] 21 root - INFO - Dropped ID, Z_CostContact, Z_Revenue columns.
+[2025-01-13 13:11:31,231] 28 root - INFO - Filled missing values for numerical and categorical columns.
+[2025-01-13 13:11:31,265] 53 root - INFO - Data cleaning process completed.
+[2025-01-13 13:11:31,265] 16 root - INFO - Starting data cleaning process.
+[2025-01-13 13:11:31,266] 21 root - INFO - Dropped ID, Z_CostContact, Z_Revenue columns.
+[2025-01-13 13:11:31,297] 28 root - INFO - Filled missing values for numerical and categorical columns.
+[2025-01-13 13:11:31,320] 53 root - INFO - Data cleaning process completed.
+[2025-01-13 13:11:31,320] 106 root - INFO - Data cleaning completed on train and test datasets.
+[2025-01-13 13:11:31,329] 115 root - INFO - Outliers removed from Income feature training data.
+[2025-01-13 13:11:31,332] 119 root - INFO - Outlier removed from Age feature from training data
+[2025-01-13 13:11:31,332] 122 root - INFO - Obtaining preprocessing object.
+[2025-01-13 13:11:31,332] 77 root - INFO - Filled the null values in Numerical columns
+[2025-01-13 13:11:31,332] 79 root - INFO - Categorical columns encoding completed
