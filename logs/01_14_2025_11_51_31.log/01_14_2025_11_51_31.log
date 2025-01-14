@@ -1,0 +1,5 @@
+[2025-01-14 11:51:32,481] 22 root - INFO - Save preprocessor obj
+[2025-01-14 11:51:32,481] 25 root - INFO - Entered the data ingestion method or component
+[2025-01-14 11:51:32,503] 28 root - INFO - Read the dataset as dataframe
+[2025-01-14 11:51:32,513] 34 root - INFO - Train test split initiated
+[2025-01-14 11:51:32,545] 41 root - INFO - Ingestion of the data is completed

@@ -3,11 +3,11 @@ import sys
 
 import pandas as pd
 import numpy as np
+from datetime import datetime
 
 from src.logger import logging
 from src.exception import CustomException
 
-from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import LabelEncoder
 from sklearn.compose import ColumnTransformer
@@ -17,34 +17,15 @@ from src.utils import save_object
 from dataclasses import dataclass
 
 @dataclass
-class DataIngestionConfig:
+class DataTransformationConfig:
     preprocessor_obj_file_path: str = os.path.join('artifacts', "preprocessor.pkl")
+    logging.info(f"Save preprocessor obj")
 
-class LabelEncoderTransformer(BaseEstimator, TransformerMixin):
-    """
-    Custom transformer to apply LabelEncoder to categorical features.
-    """
-    def __init__(self):
-        self.label_encoders = {}
-
-    def fit(self, X, y=None):
-        for col in X.columns:
-            le = LabelEncoder()
-            le.fit(X[col])
-            self.label_encoders[col] = le
-        return self
-
-    def transform(self, X):
-        X = X.copy()
-        for col in X.columns:
-            X[col] = self.label_encoders[col].transform(X[col])
-        return X
     
 class DataTransformation:
     def __init__(self):
         self.data_transformation_config = DataTransformationConfig()
 
-    
     def perform_feature_engineering(self, data):
         """
         Perform feature engineering, handle missing values, and drop unnecessary columns.
@@ -103,18 +84,22 @@ class DataTransformation:
             numerical_columns = ['Income', 'Age', 'Total_amount_spent', 'Days_since_joining', 'Kids']
             categorical_columns = ['New_Education', 'Marital_Status']
 
-            # Transformers
-            num_transformer = SimpleImputer(strategy='median')
-            cat_transformer = Pipeline(steps=[
-                ('imputer', SimpleImputer(strategy='most_frequent')),
-                ('label_encoding', LabelEncoderTransformer())
-            ])
+            # Numerical pipeline
+            num_pipeline = SimpleImputer(strategy='median')
 
-            # ColumnTransformer
+            # Categorical pipeline
+            cat_pipeline = Pipeline(
+                steps=[
+                    ('imputer', SimpleImputer(strategy='most_frequent')),
+                    ('label_encoder', 'passthrough')  # LabelEncoder applied manually later
+                ]
+            )
+
+            # Combined preprocessing
             preprocessor = ColumnTransformer(
                 transformers=[
-                    ('num', num_transformer, numerical_columns),
-                    ('cat', cat_transformer, categorical_columns)
+                    ('num', num_pipeline, numerical_columns),
+                    ('cat', cat_pipeline, categorical_columns)
                 ]
             )
 
@@ -124,6 +109,7 @@ class DataTransformation:
         except Exception as e:
             raise CustomException(e, sys)
 
+
     def initiate_data_transformation(self, train_path, test_path):
         """
         Orchestrates the data transformation process.
@@ -132,15 +118,37 @@ class DataTransformation:
             # Load datasets
             train_df = pd.read_csv(train_path)
             test_df = pd.read_csv(test_path)
+            logging.info("Read train and test data completed")
 
             # Feature engineering
             train_df = self.perform_feature_engineering(train_df)
             test_df = self.perform_feature_engineering(test_df)
+            logging.info("Feature engineering completed in train and test data")
 
-            # Preprocessor
+            # Create preprocessor object
             preprocessor = self.get_data_transformer_object()
-            train_arr = preprocessor.fit_transform(train_df)
-            test_arr = preprocessor.transform(test_df)
+
+            # Apply transformations
+            train_df = pd.DataFrame(
+                preprocessor.fit_transform(train_df),
+                columns=['Income', 'Age', 'Total_amount_spent', 'Days_since_joining', 'Kids',
+                        'New_Education', 'Marital_Status']
+            )
+            test_df = pd.DataFrame(
+                preprocessor.transform(test_df),
+                columns=['Income', 'Age', 'Total_amount_spent', 'Days_since_joining', 'Kids',
+                        'New_Education', 'Marital_Status']
+            )
+
+            # Manually apply LabelEncoder to categorical columns
+            for col in ['New_Education', 'Marital_Status']:
+                le = LabelEncoder()
+                train_df[col] = le.fit_transform(train_df[col])
+                test_df[col] = le.transform(test_df[col])
+
+            # Convert to numpy arrays for training
+            train_arr = train_df.values
+            test_arr = test_df.values
 
             # Save preprocessor object
             save_object(
