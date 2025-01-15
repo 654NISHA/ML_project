@@ -1,0 +1,13 @@
+[2025-01-15 16:14:25,165] 22 root - INFO - Save preprocessor obj
+[2025-01-15 16:14:25,169] 25 root - INFO - Entered the data ingestion method or component
+[2025-01-15 16:14:25,242] 28 root - INFO - Read the dataset as dataframe
+[2025-01-15 16:14:25,288] 34 root - INFO - Train test split initiated
+[2025-01-15 16:14:25,344] 41 root - INFO - Ingestion of the data is completed
+[2025-01-15 16:14:25,404] 128 root - INFO - Read train and test data completed
+[2025-01-15 16:14:25,405] 34 root - INFO - Starting feature engineering.
+[2025-01-15 16:14:25,507] 70 root - INFO - Feature engineering completed.
+[2025-01-15 16:14:25,508] 34 root - INFO - Starting feature engineering.
+[2025-01-15 16:14:25,546] 70 root - INFO - Feature engineering completed.
+[2025-01-15 16:14:25,546] 133 root - INFO - Feature engineering completed in train and test data
+[2025-01-15 16:14:25,546] 81 root - INFO - Creating preprocessor object.
+[2025-01-15 16:14:25,547] 113 root - INFO - Preprocessor object created.

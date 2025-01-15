@@ -9,7 +9,7 @@ from src.logger import logging
 from src.exception import CustomException
 
 from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 
@@ -81,11 +81,18 @@ class DataTransformation:
             logging.info("Creating preprocessor object.")
 
             # Define columns
-            numerical_columns = ['Income', 'Age', 'Total_amount_spent', 'Days_since_joining', 'Kids']
+            numerical_columns = ['Income', 'Age', 'Total_amount_spent', 'Days_since_joining',
+                                'Number_of_purchases','Recency']
             categorical_columns = ['New_Education', 'Marital_Status']
 
+            
             # Numerical pipeline
-            num_pipeline = SimpleImputer(strategy='median')
+            num_pipeline = Pipeline(
+                steps=[
+                    ('imputer', SimpleImputer(strategy='median')),
+                    ('scaler', StandardScaler())
+                ]
+            )
 
             # Categorical pipeline
             cat_pipeline = Pipeline(
@@ -128,18 +135,17 @@ class DataTransformation:
             # Create preprocessor object
             preprocessor = self.get_data_transformer_object()
 
-            # Apply transformations
-            train_df = pd.DataFrame(
-                preprocessor.fit_transform(train_df),
-                columns=['Income', 'Age', 'Total_amount_spent', 'Days_since_joining', 'Kids',
-                        'New_Education', 'Marital_Status']
-            )
-            test_df = pd.DataFrame(
-                preprocessor.transform(test_df),
-                columns=['Income', 'Age', 'Total_amount_spent', 'Days_since_joining', 'Kids',
-                        'New_Education', 'Marital_Status']
-            )
+             # Apply transformations
+            train_df_transformed = preprocessor.fit_transform(train_df)
+            test_df_transformed = preprocessor.transform(test_df)
 
+            # Extract columns
+            transformed_columns = ['Income', 'Age', 'Total_amount_spent', 'Days_since_joining', 'Number_of_purchases', 'Recency', 'New_Education', 'Marital_Status']
+
+            # Convert to DataFrame
+            train_df = pd.DataFrame(train_df_transformed, columns=transformed_columns)
+            test_df = pd.DataFrame(test_df_transformed, columns=transformed_columns)
+            
             # Manually apply LabelEncoder to categorical columns
             for col in ['New_Education', 'Marital_Status']:
                 le = LabelEncoder()
