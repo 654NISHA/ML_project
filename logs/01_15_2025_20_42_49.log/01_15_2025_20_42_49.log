@@ -1,0 +1,26 @@
+[2025-01-15 20:42:50,092] 22 root - INFO - Save preprocessor obj
+[2025-01-15 20:42:50,139] 28 root - INFO - Entered the data ingestion method or component
+[2025-01-15 20:42:50,154] 31 root - INFO - Read the dataset as dataframe
+[2025-01-15 20:42:50,170] 37 root - INFO - Train test split initiated
+[2025-01-15 20:42:50,186] 44 root - INFO - Ingestion of the data is completed
+[2025-01-15 20:42:50,217] 128 root - INFO - Read train and test data completed
+[2025-01-15 20:42:50,217] 34 root - INFO - Starting feature engineering.
+[2025-01-15 20:42:50,232] 70 root - INFO - Feature engineering completed.
+[2025-01-15 20:42:50,232] 34 root - INFO - Starting feature engineering.
+[2025-01-15 20:42:50,248] 70 root - INFO - Feature engineering completed.
+[2025-01-15 20:42:50,248] 133 root - INFO - Feature engineering completed in train and test data
+[2025-01-15 20:42:50,248] 81 root - INFO - Creating preprocessor object.
+[2025-01-15 20:42:50,248] 113 root - INFO - Preprocessor object created.
+[2025-01-15 20:42:50,264] 166 root - INFO - Data transformation process completed.
+[2025-01-15 20:42:50,264] 69 root - INFO - Starting model training process with n_clusters=2, n_components=2
+[2025-01-15 20:42:50,264] 26 root - INFO - Performing PCA with 2 components.
+[2025-01-15 20:42:50,295] 29 root - INFO - PCA completed.
+[2025-01-15 20:42:50,295] 26 root - INFO - Performing PCA with 2 components.
+[2025-01-15 20:42:50,295] 29 root - INFO - PCA completed.
+[2025-01-15 20:42:50,295] 39 root - INFO - Performing KMeans clustering with 2 clusters.
+[2025-01-15 20:42:50,691] 43 root - INFO - KMeans clustering completed with silhouette score: 0.47277756551340044
+[2025-01-15 20:42:50,706] 82 root - INFO - KMeans Train Silhouette Score: 0.47277756551340044, Test Silhouette Score: 0.46788613213719077
+[2025-01-15 20:42:50,706] 53 root - INFO - Performing hierarchical clustering with 2 clusters.
+[2025-01-15 20:42:50,938] 57 root - INFO - Hierarchical clustering completed with silhouette score: 0.4655911435703842
+[2025-01-15 20:42:50,938] 91 root - INFO - Hierarchical Train Silhouette Score: 0.4655911435703842, Test Silhouette Score: 0.46452195566863813
+[2025-01-15 20:42:50,955] 103 root - INFO - Model training process completed and models saved.

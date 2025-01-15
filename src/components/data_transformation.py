@@ -140,10 +140,11 @@ class DataTransformation:
             test_df_transformed = preprocessor.transform(test_df)
 
             # Extract columns
-            transformed_columns = ['Income', 'Age', 'Total_amount_spent', 'Days_since_joining', 'Number_of_purchases', 'Recency', 'New_Education', 'Marital_Status']
+            transformed_columns = ['Income', 'Age', 'Total_amount_spent', 'Days_since_joining', 'Number_of_purchases', 'Recency', 
+                                   'New_Education', 'Marital_Status']
 
             # Convert to DataFrame
-            train_df = pd.DataFrame(train_df_transformed, columns=transformed_columns)
+            train_df = pd.DataFrame(train_df_transformed, columns=transformed_columns) 
             test_df = pd.DataFrame(test_df_transformed, columns=transformed_columns)
             
             # Manually apply LabelEncoder to categorical columns

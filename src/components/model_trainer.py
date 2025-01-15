@@ -3,8 +3,7 @@ import sys
 from dataclasses import dataclass
 
 from sklearn.decomposition import PCA
-from sklearn.cluster import KMeans
-from sklearn.cluster import AgglomerativeClustering
+from sklearn.cluster import KMeans, AgglomerativeClustering
 from sklearn.metrics import silhouette_score
 
 from src.exception import CustomException
@@ -48,37 +47,50 @@ class ModelTrainer:
 
     def perform_hierarchical_clustering(self, data, n_clusters):
         """
-        Perform Agglomerative Clustering on the given data.
+        Perform Agglomerative Clustering and return the model, labels, and silhouette score.
         """
         try:
             logging.info(f"Performing hierarchical clustering with {n_clusters} clusters.")
-            hc = AgglomerativeClustering(n_clusters=n_clusters)
-            hc_labels = hc.fit_predict(data)
-            logging.info("Hierarchical clustering completed.")
-            return hc, hc_labels
+            clustering_model = AgglomerativeClustering(n_clusters=n_clusters, linkage='ward')
+            labels = clustering_model.fit_predict(data)
+            silhouette_avg = silhouette_score(data, labels) if n_clusters > 1 else None
+            logging.info(f"Hierarchical clustering completed with silhouette score: {silhouette_avg}")
+            return clustering_model, labels, silhouette_avg
         except Exception as e:
             raise CustomException(e, sys)
 
-    def initiate_model_trainer(self, train_array, test_array, preprocessor_path):
+    def initiate_model_trainer(self, train_array, test_array):
         """
-        Orchestrates the model training process.
+        Orchestrates the model training process with configurable parameters.
         """
         try:
-            logging.info("Starting model training process.")
+            n_clusters=2 
+            n_components=2
+            logging.info(f"Starting model training process with n_clusters={n_clusters}, n_components={n_components}")
 
-            # Load training and testing data
-            train_data, test_data = train_array, test_array
-
-            # Perform PCA on training data
-            pca, train_pca_data = self.perform_pca(train_data, n_components=2)
+            # Perform PCA on training and testing data
+            pca, train_pca_data = self.perform_pca(train_array, n_components=n_components)
+            _, test_pca_data = self.perform_pca(test_array, n_components=n_components)
 
             # Perform KMeans clustering on PCA-transformed training data
-            kmeans, kmeans_labels, silhouette_avg = self.perform_kmeans(train_pca_data, n_clusters=2)
+            kmeans, kmeans_train_labels, kmeans_train_silhouette_score = self.perform_kmeans(train_pca_data, n_clusters=n_clusters)
+
+            # Evaluate KMeans on test data
+            kmeans_test_labels = kmeans.predict(test_pca_data)
+            kmeans_test_silhouette_score = silhouette_score(test_pca_data, kmeans_test_labels)
+
+            logging.info(f"KMeans Train Silhouette Score: {kmeans_train_silhouette_score}, Test Silhouette Score: {kmeans_test_silhouette_score}")
 
             # Perform hierarchical clustering on PCA-transformed training data
-            hc, hc_labels = self.perform_hierarchical_clustering(train_pca_data, n_clusters=2)
+            hc, hc_train_labels, hc_train_silhouette_score = self.perform_hierarchical_clustering(train_pca_data, n_clusters=n_clusters)
 
-            # Save the trained model
+            # Evaluate hierarchical clustering on test data
+            hc_test_labels = AgglomerativeClustering(n_clusters=n_clusters, linkage='ward').fit_predict(test_pca_data)
+            hc_test_silhouette_score = silhouette_score(test_pca_data, hc_test_labels)
+
+            logging.info(f"Hierarchical Train Silhouette Score: {hc_train_silhouette_score}, Test Silhouette Score: {hc_test_silhouette_score}")
+
+            # Save the trained models and PCA
             save_object(
                 file_path=self.model_trainer_config.trained_model_file_path,
                 obj={
@@ -88,14 +100,20 @@ class ModelTrainer:
                 }
             )
 
-            logging.info("Model training process completed and model saved.")
+            logging.info("Model training process completed and models saved.")
+
+            # Return results including silhouette scores
             return {
-                "pca": pca,
-                "kmeans": kmeans,
-                "kmeans_labels": kmeans_labels,
-                "hierarchical": hc,
-                "hc_labels": hc_labels,
-                "silhouette_score": silhouette_avg
+                "kmeans": {
+                    "model": kmeans,
+                    "train_silhouette": kmeans_train_silhouette_score,
+                    "test_silhouette": kmeans_test_silhouette_score
+                },
+                "hierarchical": {
+                    "model": hc,
+                    "train_silhouette": hc_train_silhouette_score,
+                    "test_silhouette": hc_test_silhouette_score
+                }
             }
         except Exception as e:
             raise CustomException(e, sys)
