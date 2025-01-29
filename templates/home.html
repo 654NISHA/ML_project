@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predict Data</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+        }
+        form {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #28a745;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center;">Predict Data</h1>
+    <form action="/predictdata" method="POST">
+        <label for="Income">Income:</label>
+        <input type="number" id="Income" name="Income" required>
+        
+        <label for="Age">Age:</label>
+        <input type="number" id="Age" name="Age" required>
+        
+        <label for="Total_amount_spent">Total Amount Spent:</label>
+        <input type="number" id="Total_amount_spent" name="Total_amount_spent" required>
+        
+        <label for="Kids">Kids (0-4):</label>
+        <input type="number" id="Kids" name="Kids" min="0" max="4" required>
+        
+        <label for="Complain">Complain (0 or 1):</label>
+        <input type="number" id="Complain" name="Complain" min="0" max="1" required>
+        
+        <label for="Number_of_purchases">Number of Purchases:</label>
+        <input type="number" id="Number_of_purchases" name="Number_of_purchases" required>
+        
+        <label for="Accepted_campaigns">Accepted Campaigns (0-5):</label>
+        <input type="number" id="Accepted_campaigns" name="Accepted_campaigns" min="0" max="5" required>
+        
+        <label for="Education">Education:</label>
+        <select id="Education" name="Education" required>
+            <option value="Graduation">Graduation</option>
+            <option value="PhD">PhD</option>
+            <option value="Master">Master</option>
+            <option value="Basic">Basic</option>
+            <option value="2n Cycle">2n Cycle</option>
+        </select>
+        
+        <label for="Marital_Status">Marital Status:</label>
+        <select id="Marital_Status" name="Marital_Status" required>
+            <option value="Single">Single</option>
+            <option value="Married">Married</option>
+            <option value="Divorced">Divorced</option>
+            <option value="Together">Together</option>
+            <option value="Widow">Widow</option>
+            <option value="Alone">Alone</option>
+            <option value="Absurd">Absurd</option>
+            <option value="YOLO">YOLO</option>
+        </select>
+        
+        <button type="submit">Predict</button>
+    </form>
+    <br>
+    {% if results %}
+    <div style="text-align: center;">
+        <h2>Prediction Result: {{ results }}</h2>
+    </div>
+    {% endif %}
+</body>
+</html>

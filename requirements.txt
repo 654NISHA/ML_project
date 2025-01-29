@@ -4,6 +4,7 @@ seaborn
 plotly
 scikit-learn
 dill
+Flask
 
 #-e .
 

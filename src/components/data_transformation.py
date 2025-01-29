@@ -1,27 +1,21 @@
 import os
 import sys
-
 import pandas as pd
 import numpy as np
 from datetime import datetime
-
 from src.logger import logging
 from src.exception import CustomException
-
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
-
 from src.utils import save_object
 from dataclasses import dataclass
 
 @dataclass
 class DataTransformationConfig:
     preprocessor_obj_file_path: str = os.path.join('artifacts', "preprocessor.pkl")
-    logging.info(f"Save preprocessor obj")
-
-    
+  
 class DataTransformation:
     def __init__(self):
         self.data_transformation_config = DataTransformationConfig()
@@ -37,7 +31,7 @@ class DataTransformation:
             current_year = datetime.today().year
             data['Age'] = current_year - data['Year_Birth']
             data['Kids'] = data['Teenhome'] + data['Kidhome']
-            data['New_Education'] = data['Education'].replace(['Basic', '2n Cycle'], 'School')
+            data['Education'] = data['Education'].replace({'Basic': 'School', '2n Cycle': 'School'})
 
             # Handle date-related features
             data['Dt_Customer'] = pd.to_datetime(data['Dt_Customer'], format='%d-%m-%Y', errors='coerce')
@@ -55,7 +49,7 @@ class DataTransformation:
 
             # Drop unnecessary columns
             columns_to_drop = ['Year_Birth', 'Teenhome', 'Kidhome', 'ID', 'Z_CostContact', 'Z_Revenue',
-                               'Education', 'NumDealsPurchases', 'NumWebPurchases', 'NumCatalogPurchases',
+                                'NumDealsPurchases', 'NumWebPurchases', 'NumCatalogPurchases',
                                'NumStorePurchases', 'NumWebVisitsMonth', 'MntFishProducts', 'MntFruits',
                                'MntGoldProds', 'MntMeatProducts', 'MntWines', 'MntSweetProducts',
                                'AcceptedCmp1', 'AcceptedCmp2', 'AcceptedCmp3', 'AcceptedCmp4', 'AcceptedCmp5']
@@ -81,11 +75,10 @@ class DataTransformation:
             logging.info("Creating preprocessor object.")
 
             # Define columns
-            numerical_columns = ['Income', 'Age', 'Total_amount_spent', 'Days_since_joining',
-                                'Number_of_purchases','Recency']
-            categorical_columns = ['New_Education', 'Marital_Status']
+            numerical_columns = ['Income', 'Age', 'Total_amount_spent','Kids','Complain',
+                                'Number_of_purchases','Accepted_campaigns']
+            categorical_columns = ['Education', 'Marital_Status']
 
-            
             # Numerical pipeline
             num_pipeline = Pipeline(
                 steps=[
@@ -97,8 +90,7 @@ class DataTransformation:
             # Categorical pipeline
             cat_pipeline = Pipeline(
                 steps=[
-                    ('imputer', SimpleImputer(strategy='most_frequent')),
-                    ('label_encoder', 'passthrough')  # LabelEncoder applied manually later
+                    ('imputer', SimpleImputer(strategy='most_frequent'))
                 ]
             )
 
@@ -116,6 +108,16 @@ class DataTransformation:
         except Exception as e:
             raise CustomException(e, sys)
 
+    def apply_label_encoding(self, data, categorical_columns):
+        """
+        Applies LabelEncoder to each categorical column in the dataset.
+        """
+        label_encoders = {}
+        for col in categorical_columns:
+            le = LabelEncoder()
+            data[col] = le.fit_transform(data[col])
+            label_encoders[col] = le  # Store encoder for future use
+        return data, label_encoders
 
     def initiate_data_transformation(self, train_path, test_path):
         """
@@ -132,26 +134,26 @@ class DataTransformation:
             test_df = self.perform_feature_engineering(test_df)
             logging.info("Feature engineering completed in train and test data")
 
+            # Apply Label Encoding to categorical columns
+            categorical_columns = ['Education', 'Marital_Status']
+            train_df, label_encoders = self.apply_label_encoding(train_df, categorical_columns)
+            test_df, _ = self.apply_label_encoding(test_df, categorical_columns)
+            logging.info("Label encoding completed on categorical columns")
+
             # Create preprocessor object
             preprocessor = self.get_data_transformer_object()
 
-             # Apply transformations
+            # Apply transformations (Numerical transformations happen automatically in the pipeline)
             train_df_transformed = preprocessor.fit_transform(train_df)
             test_df_transformed = preprocessor.transform(test_df)
 
             # Extract columns
-            transformed_columns = ['Income', 'Age', 'Total_amount_spent', 'Days_since_joining', 'Number_of_purchases', 'Recency', 
-                                   'New_Education', 'Marital_Status']
+            transformed_columns = ['Income', 'Age', 'Total_amount_spent', 'Kids', 'Complain', 'Number_of_purchases', 'Accepted_campaigns',
+                                   'Education', 'Marital_Status']
 
             # Convert to DataFrame
             train_df = pd.DataFrame(train_df_transformed, columns=transformed_columns) 
             test_df = pd.DataFrame(test_df_transformed, columns=transformed_columns)
-            
-            # Manually apply LabelEncoder to categorical columns
-            for col in ['New_Education', 'Marital_Status']:
-                le = LabelEncoder()
-                train_df[col] = le.fit_transform(train_df[col])
-                test_df[col] = le.transform(test_df[col])
 
             # Convert to numpy arrays for training
             train_arr = train_df.values

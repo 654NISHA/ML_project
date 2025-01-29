@@ -37,7 +37,7 @@ class ModelTrainer:
         """
         try:
             logging.info(f"Performing KMeans clustering with {n_clusters} clusters.")
-            kmeans = KMeans(n_clusters=n_clusters, random_state=42)
+            kmeans = KMeans(n_clusters=n_clusters, random_state=42, n_init='auto')
             kmeans_labels = kmeans.fit_predict(data)
             silhouette_avg = silhouette_score(data, kmeans_labels)
             logging.info(f"KMeans clustering completed with silhouette score: {silhouette_avg}")
@@ -64,18 +64,23 @@ class ModelTrainer:
         Orchestrates the model training process with configurable parameters.
         """
         try:
-            n_clusters=2 
-            n_components=2
+            n_clusters = 2 
+            n_components = 2
             logging.info(f"Starting model training process with n_clusters={n_clusters}, n_components={n_components}")
 
             # Perform PCA on training and testing data
             pca, train_pca_data = self.perform_pca(train_array, n_components=n_components)
             _, test_pca_data = self.perform_pca(test_array, n_components=n_components)
 
+            # Ensure that the PCA transformation has reduced the data to the correct number of components
+            logging.info(f"Train PCA Data Shape: {train_pca_data.shape}, Test PCA Data Shape: {test_pca_data.shape}")
+
+            pca_path = os.path.join('artifacts', 'pca.pkl')
+            save_object(file_path=pca_path, obj=pca)
+            logging.info("PCA transformer saved successfully.")
+
             # Perform KMeans clustering on PCA-transformed training data
             kmeans, kmeans_train_labels, kmeans_train_silhouette_score = self.perform_kmeans(train_pca_data, n_clusters=n_clusters)
-
-            # Evaluate KMeans on test data
             kmeans_test_labels = kmeans.predict(test_pca_data)
             kmeans_test_silhouette_score = silhouette_score(test_pca_data, kmeans_test_labels)
 
@@ -83,37 +88,36 @@ class ModelTrainer:
 
             # Perform hierarchical clustering on PCA-transformed training data
             hc, hc_train_labels, hc_train_silhouette_score = self.perform_hierarchical_clustering(train_pca_data, n_clusters=n_clusters)
-
-            # Evaluate hierarchical clustering on test data
-            hc_test_labels = AgglomerativeClustering(n_clusters=n_clusters, linkage='ward').fit_predict(test_pca_data)
+            hc_test_labels = hc.fit_predict(test_pca_data) 
             hc_test_silhouette_score = silhouette_score(test_pca_data, hc_test_labels)
 
             logging.info(f"Hierarchical Train Silhouette Score: {hc_train_silhouette_score}, Test Silhouette Score: {hc_test_silhouette_score}")
 
+            # Selecting the best model based on test silhouette score
+            if kmeans_test_silhouette_score >= hc_test_silhouette_score:
+                best_model = kmeans
+                best_silhouette_score = kmeans_test_silhouette_score
+                best_model_name = "KMeans"
+            else:
+                best_model = hc
+                best_silhouette_score = hc_test_silhouette_score
+                best_model_name = "Hierarchical Clustering"
+
+            logging.info(f"Best model selected: {best_model_name} with silhouette score: {best_silhouette_score}")
+
             # Save the trained models and PCA
             save_object(
                 file_path=self.model_trainer_config.trained_model_file_path,
-                obj={
-                    "pca": pca,
-                    "kmeans": kmeans,
-                    "hierarchical": hc
-                }
+                obj=best_model
             )
 
             logging.info("Model training process completed and models saved.")
 
             # Return results including silhouette scores
             return {
-                "kmeans": {
-                    "model": kmeans,
-                    "train_silhouette": kmeans_train_silhouette_score,
-                    "test_silhouette": kmeans_test_silhouette_score
-                },
-                "hierarchical": {
-                    "model": hc,
-                    "train_silhouette": hc_train_silhouette_score,
-                    "test_silhouette": hc_test_silhouette_score
-                }
+                "best_model_name": best_model_name,
+                "best_model": best_model,
+                "best_silhouette_score": best_silhouette_score
             }
         except Exception as e:
             raise CustomException(e, sys)
