@@ -75,17 +75,21 @@ class DataTransformation:
             logging.info("Creating preprocessor object.")
 
             # Define columns
-            numerical_columns = ['Income', 'Age', 'Total_amount_spent','Kids','Complain',
-                                'Number_of_purchases','Accepted_campaigns']
+            scale_features = ['Income', 'Age', 'Total_amount_spent', 'Number_of_purchases']
+            other_numerical_features = ['Kids', 'Complain', 'Accepted_campaigns']
             categorical_columns = ['Education', 'Marital_Status']
 
             # Numerical pipeline
             num_pipeline = Pipeline(
                 steps=[
-                    ('imputer', SimpleImputer(strategy='median')),
-                    ('scaler', StandardScaler())
-                ]
-            )
+                    ('imputer', SimpleImputer(strategy='median'))
+                ])
+
+            scale_pipeline = Pipeline([
+                ('imputer', SimpleImputer(strategy='median')),
+                ('scaler', StandardScaler())  
+            ])
+            
 
             # Categorical pipeline
             cat_pipeline = Pipeline(
@@ -97,7 +101,8 @@ class DataTransformation:
             # Combined preprocessing
             preprocessor = ColumnTransformer(
                 transformers=[
-                    ('num', num_pipeline, numerical_columns),
+                    ('scaled_num', scale_pipeline, scale_features),
+                    ('num', num_pipeline, other_numerical_features),
                     ('cat', cat_pipeline, categorical_columns)
                 ]
             )
